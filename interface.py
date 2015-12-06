@@ -1,46 +1,7 @@
 import sys
-import socket
-import threading
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-import Queue
-import time
+from PyQt4.QtCore import * # NOQA
+from PyQt4.QtGui import * # NOQA
 
-class ReadThread (threading.Thread):
-    def __init__(self, name, csoc, threadQueue, screenQueue):
-        threading.Thread.__init__(self)
-        self.name = name
-        self.csoc = csoc
-        self.nickname = ""
-        self.threadQueue = threadQueue
-        self.screenQueue = screenQueue
-
-    def incoming_parser(self, data):
-        print("parser")
-
-    def run(self):
-        while True:
-            data = self.csoc.recv(1024)
-            print("data " + data)
-
-
-class WriteThread (threading.Thread):
-    def __init__(self, name, csoc, threadQueue):
-        threading.Thread.__init__(self)
-        self.name = name
-        self.csoc = csoc
-        self.threadQueue = threadQueue
-
-    def run(self):
-        #code
-        if self.threadQueue.qsize() > 0:
-            queue_message = self.threadQueue.get()
-            #code
-            try:
-                self.csoc.send(queue_message)
-            except socket.error:
-                self.csoc.close()
-                #break
 
 class ClientDialog(QDialog):
     def __init__(self, threadQueue, screenQueue):
@@ -85,14 +46,15 @@ class ClientDialog(QDialog):
         self.setLayout(self.vbox)
 
     def cprint(self, data):
-        #code
+        # code
         self.channel.append(data)
 
     def updateChannelWindow(self):
         if self.screenQueue.qsize() > 0:
-            queue_message = self.screenQueue.get()
-            #code
-            #self.channel.append(stuff)
+            print("updateChannelWindow")
+            # queue_message = self.screenQueue.get()
+            # code
+            # self.channel.append(stuff)
 
     def outgoing_parser(self):
         print("parser")
@@ -101,22 +63,3 @@ class ClientDialog(QDialog):
         ''' Run the app and show the main form. '''
         self.show()
         self.qt_app.exec_()
-
-# connect to the server
-s = socket.socket()
-host = "178.233.19.205"
-port = 12345
-s.connect((host,port))
-sendQueue = Queue.Queue(maxsize=0)
-screenQueue = Queue.Queue(maxsize=0)
-app = ClientDialog(sendQueue, screenQueue)
-# start threads
-rt = ReadThread("ReadThread", s, sendQueue, screenQueue)
-rt.start()
-
-wt = WriteThread("WriteThread", s, sendQueue)
-wt.start()
-app.run()
-rt.join()
-wt.join()
-s.close()
