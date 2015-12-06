@@ -6,6 +6,7 @@ from reader import ReaderThread
 from writer import WriterThread
 from interface import ClientDialog
 
+
 if len(sys.argv) < 3:
     print "You have to specify hostname and port"
     sys.exit(2)
@@ -24,12 +25,12 @@ sendQueue = Queue.Queue(maxsize=0)
 screenQueue = Queue.Queue(maxsize=0)
 app = ClientDialog(sendQueue, screenQueue)
 # start threads
-rt = ReaderThread("ReaderThread", s, sendQueue, screenQueue)
-rt.start()
+reader = ReaderThread("ReaderThread", s, sendQueue, screenQueue)
+reader.start()
 
-wt = WriterThread("WriterThread", s, sendQueue)
-wt.start()
+writer = WriterThread("WriterThread", s, sendQueue)
+writer.start()
 app.run()
-rt.join()
-wt.join()
+reader.join()
+writer.join()
 s.close()

@@ -57,7 +57,10 @@ class ClientDialog(QDialog):
             # self.channel.append(stuff)
 
     def outgoing_parser(self):
-        print("parser")
+        msg = self.sender.text()
+        if len(msg) > 0:
+            self.sender.clear()
+            self.threadQueue.put(str(msg))
 
     def run(self):
         ''' Run the app and show the main form. '''
