@@ -1,8 +1,12 @@
+import signal
 import socket
 import Queue
 from reader import ReaderThread
 from writer import WriterThread
 from interface import ClientDialog
+
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 # connect to the server
 s = socket.socket()
