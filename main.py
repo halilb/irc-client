@@ -1,3 +1,4 @@
+import sys
 import signal
 import socket
 import Queue
@@ -5,13 +6,19 @@ from reader import ReaderThread
 from writer import WriterThread
 from interface import ClientDialog
 
+if len(sys.argv) < 3:
+    print "You have to specify hostname and port"
+    sys.exit(2)
+else:
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+
+print "Connecting to %s:%s" % (host, port)
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 # connect to the server
 s = socket.socket()
-host = "178.233.19.205"
-port = 12345
 s.connect((host, port))
 sendQueue = Queue.Queue(maxsize=0)
 screenQueue = Queue.Queue(maxsize=0)
