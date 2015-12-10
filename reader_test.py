@@ -10,7 +10,7 @@ def receiveMessage(msg):
 
 def testEmptyMessage():
     res = receiveMessage("")
-    assert res.type == Types.responseTypes.EMPTY
+    assert res == None
 
 def testWelcomeMessage():
     res = receiveMessage("HEL halil")

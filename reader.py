@@ -16,8 +16,7 @@ class ReaderThread (threading.Thread):
         incoming_message = IncomingMessage(Types.originTypes.SERVER)
 
         if len(data) == 0:
-            incoming_message.type = Types.responseTypes.EMPTY
-            return incoming_message
+            return
 
         print("INCOMING: " + data)
 

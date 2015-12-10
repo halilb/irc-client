@@ -7,4 +7,4 @@ class Enum(set):
 
 class Types:
     originTypes = Enum(["SERVER", "LOCAL"])
-    responseTypes = Enum(["NEW_LOGIN", "REJECTED", "PRIVATE_MES_FAILED", "EMPTY"])
+    responseTypes = Enum(["NEW_LOGIN", "REJECTED", "PRIVATE_MES_FAILED"])
