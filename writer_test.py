@@ -20,3 +20,6 @@ def testQuit():
 
 def testPrivateMessage():
     assert sendMessage("/msg halil selam halil") == "MSG halil:selam halil"
+
+def testTick():
+    assert sendMessage("/tic") == "TIC"

@@ -1,8 +1,10 @@
+import Queue
 from reader import ReaderThread
 from enum import Types
 
 
-reader = ReaderThread("ReaderThread", None, None, None)
+threadQueue = Queue.Queue(maxsize=0)
+reader = ReaderThread("ReaderThread", None, threadQueue, None)
 
 
 def receiveMessage(msg):
@@ -23,3 +25,6 @@ def testRejectedMessage():
 def testPrivateFailedMessage():
     res = receiveMessage("MNO")
     assert res.type == Types.responseTypes.PRIVATE_MES_FAILED
+
+def testTick():
+    assert receiveMessage("TIC") == None

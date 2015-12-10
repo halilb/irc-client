@@ -23,6 +23,9 @@ class ReaderThread (threading.Thread):
         cmd = data[0:3]
         rest = data[4:]
 
+        if cmd == "TIC":
+            self.threadQueue.put("/tic")
+            return
         if cmd == "HEL":
             incoming_message.type = Types.responseTypes.NEW_LOGIN
         elif cmd == "REJ":

@@ -14,6 +14,8 @@ class WriterThread (threading.Thread):
             words = msg.split(" ")
             cmd = words[0][1:]
             print "cmd: " + cmd
+            if cmd == "tic":
+                return "TIC"
             if cmd == "nick":
                 return "USR " + words[1]
             if cmd == "list":
