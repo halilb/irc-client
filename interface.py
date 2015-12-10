@@ -2,6 +2,7 @@ import sys
 from enum import Types
 from PyQt4.QtCore import * # NOQA
 from PyQt4.QtGui import * # NOQA
+from time import gmtime, strftime
 
 
 class ClientDialog(QDialog):
@@ -54,6 +55,7 @@ class ClientDialog(QDialog):
         if self.screenQueue.qsize() > 0:
             incoming_message = self.screenQueue.get()
             message = self.incoming_parser(incoming_message)
+            message = self.formatMessage(message, False)
             self.channel.append(message)
 
     def incoming_parser(self, incoming_message):
@@ -70,10 +72,17 @@ class ClientDialog(QDialog):
         return "not handled"
 
     def outgoing_parser(self):
-        msg = self.sender.text()
+        msg = str(self.sender.text())
         if len(msg) > 0:
+            displayedMessage = self.formatMessage(msg, True)
             self.sender.clear()
-            self.threadQueue.put(str(msg))
+            self.channel.append(displayedMessage)
+            self.threadQueue.put(msg)
+
+    def formatMessage(self, message, isLocal):
+        result = strftime("%H:%M:%S", gmtime())
+        result +=  " -Local-" if isLocal else " -Server-"
+        return result + ": " + message
 
     def run(self):
         ''' Run the app and show the main form. '''
