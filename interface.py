@@ -1,4 +1,5 @@
 import sys
+from enum import Types
 from PyQt4.QtCore import * # NOQA
 from PyQt4.QtGui import * # NOQA
 
@@ -51,10 +52,22 @@ class ClientDialog(QDialog):
 
     def updateChannelWindow(self):
         if self.screenQueue.qsize() > 0:
-            print("updateChannelWindow")
-            # queue_message = self.screenQueue.get()
-            # code
-            # self.channel.append(stuff)
+            incoming_message = self.screenQueue.get()
+            message = self.incoming_parser(incoming_message)
+            self.channel.append(message)
+
+    def incoming_parser(self, incoming_message):
+        msgType = incoming_message.type
+        responseTypes = Types.responseTypes
+
+        if msgType == responseTypes.NEW_LOGIN:
+            return "Registered as"
+        elif msgType == responseTypes.REJECTED:
+            return "Rejected"
+        elif msgType == responseTypes.PRIVATE_MES_FAILED:
+            return "Private message failed"
+
+        return "not handled"
 
     def outgoing_parser(self):
         msg = self.sender.text()

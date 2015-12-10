@@ -1,4 +1,6 @@
 import threading
+from enum import Types
+from incoming_message import IncomingMessage
 
 
 class ReaderThread (threading.Thread):
@@ -11,9 +13,29 @@ class ReaderThread (threading.Thread):
         self.screenQueue = screenQueue
 
     def incoming_parser(self, data):
-        print("parser")
+        incoming_message = IncomingMessage(Types.originTypes.SERVER)
+
+        if len(data) == 0:
+            incoming_message.type = Types.responseTypes.EMPTY
+            return incoming_message
+
+        print("INCOMING: " + data)
+
+        cmd = data[0:3]
+        rest = data[4:]
+
+        if cmd == "HEL":
+            incoming_message.type = Types.responseTypes.NEW_LOGIN
+        elif cmd == "REJ":
+            incoming_message.type = Types.responseTypes.REJECTED
+        elif cmd == "MNO":
+            incoming_message.type = Types.responseTypes.PRIVATE_MES_FAILED
+
+        return incoming_message
 
     def run(self):
         while True:
             data = self.csoc.recv(1024)
-            print("data " + data)
+            msg = self.incoming_parser(data)
+            if msg:
+                self.screenQueue.put(msg)
