@@ -40,3 +40,9 @@ This component communicates with Interface via threadQueue. It parses user messa
 
 #### 3. Reader
 This component listens server messages and parses them into **IncomingMessage** object. It decides the type of message and related username. After parsing process, it puts IncomingMessage object to screenQueu.
+
+### Server Problems
+
+I experienced 2 problems with the server:
+- Server sometimes closes the TCP connection when i try to register a new user name(/nick halil)
+- Server does not end messages with new line character(\n). This prevents me from parsing multiple messages within one TCP stream.(TICSAY halil:hello)
