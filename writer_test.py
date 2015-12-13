@@ -1,7 +1,9 @@
+import Queue
 from writer import WriterThread
 
 
-writer = WriterThread("WriterThread", None, None)
+screenQueue = Queue.Queue(maxsize=0)
+writer = WriterThread("WriterThread", None, None, screenQueue)
 
 def sendMessage(msg):
     return writer.outgoing_parser(msg)
