@@ -58,18 +58,26 @@ class ClientDialog(QDialog):
             message = self.formatMessage(message, False)
             self.channel.append(message)
 
-    def incoming_parser(self, incoming_message):
-        msgType = incoming_message.type
+    def incoming_parser(self, mes):
+        msgType = mes.type
         responseTypes = Types.responseTypes
 
-        if msgType == responseTypes.NEW_LOGIN:
-            return "Registered as"
+        print msgType
+        if msgType == responseTypes.PUBLIC_MESSAGE:
+            return "<" + mes.nickname + ">:" + mes.text
+        if msgType == responseTypes.PRIVATE_MESSAGE:
+            return "*" + mes.nickname + "*:" + mes.text
+        elif msgType == responseTypes.NEW_LOGIN:
+            return "Registered as <" + mes.nickname + ">"
         elif msgType == responseTypes.REJECTED:
-            return "Rejected"
+            return "Username rejected as <" + mes.nickname + ">"
         elif msgType == responseTypes.PRIVATE_MES_FAILED:
             return "Private message failed"
+        elif msgType == responseTypes.SYSTEM:
+            return mes.text
 
         return "not handled"
+
 
     def outgoing_parser(self):
         msg = str(self.sender.text())

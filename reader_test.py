@@ -17,10 +17,12 @@ def testEmptyMessage():
 def testWelcomeMessage():
     res = receiveMessage("HEL halil")
     assert res.type == Types.responseTypes.NEW_LOGIN
+    assert res.nickname == "halil"
 
 def testRejectedMessage():
-    res = receiveMessage("REJ")
+    res = receiveMessage("REJ halil")
     assert res.type == Types.responseTypes.REJECTED
+    assert res.nickname == "halil"
 
 def testPrivateFailedMessage():
     res = receiveMessage("MNO")
@@ -28,3 +30,13 @@ def testPrivateFailedMessage():
 
 def testTick():
     assert receiveMessage("TIC") == None
+
+def testPublicMessage():
+    res = receiveMessage("SAY halil:selam herkese")
+    assert res.type == Types.responseTypes.PUBLIC_MESSAGE
+    assert res.nickname == "halil"
+
+def testPrivateMessage():
+    res = receiveMessage("MSG adam:selam halil")
+    assert res.type == Types.responseTypes.PRIVATE_MESSAGE
+    assert res.nickname == "adam"

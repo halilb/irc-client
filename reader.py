@@ -26,10 +26,28 @@ class ReaderThread (threading.Thread):
         if cmd == "TIC":
             self.threadQueue.put("/tic")
             return
-        if cmd == "HEL":
+        if cmd == "TOC":
+            return
+
+        if cmd == "SAY":
+            tempArr = rest.split(":")
+            incoming_message.type = Types.responseTypes.PUBLIC_MESSAGE
+            incoming_message.nickname = tempArr[0]
+            incoming_message.text = tempArr[1]
+        if cmd == "MSG":
+            tempArr = rest.split(":")
+            incoming_message.type = Types.responseTypes.PRIVATE_MESSAGE
+            incoming_message.nickname = tempArr[0]
+            incoming_message.text = tempArr[1]
+        elif cmd == "HEL":
             incoming_message.type = Types.responseTypes.NEW_LOGIN
+            incoming_message.nickname = rest
+        elif cmd == "SYS":
+            incoming_message.type = Types.responseTypes.SYSTEM
+            incoming_message.text = rest
         elif cmd == "REJ":
             incoming_message.type = Types.responseTypes.REJECTED
+            incoming_message.nickname = rest
         elif cmd == "MNO":
             incoming_message.type = Types.responseTypes.PRIVATE_MES_FAILED
 
