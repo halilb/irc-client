@@ -30,7 +30,7 @@ class ClientDialog(QDialog):
         # The send button
         self.send_button = QPushButton('&Send')
         # The users' section
-        self.userList = QListView()
+        self.userList = QTextBrowser()
         # Connect the Go button to its callback
         self.send_button.clicked.connect(self.outgoing_parser)
         # Add the controls to the vertical layout
@@ -55,8 +55,9 @@ class ClientDialog(QDialog):
         if self.screenQueue.qsize() > 0:
             incoming_message = self.screenQueue.get()
             message = self.incoming_parser(incoming_message)
-            message = self.formatMessage(message, False)
-            self.channel.append(message)
+            if message:
+                message = self.formatMessage(message, False)
+                self.channel.append(message)
 
     def incoming_parser(self, mes):
         msgType = mes.type
@@ -75,6 +76,11 @@ class ClientDialog(QDialog):
             return "Private message failed"
         elif msgType == responseTypes.SYSTEM:
             return mes.text
+        elif msgType == responseTypes.LIST:
+            self.userList.clear()
+            for item in mes.nickname.split(":"):
+                self.userList.append(item)
+            return
 
         return "not handled"
 

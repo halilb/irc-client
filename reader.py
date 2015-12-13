@@ -50,6 +50,9 @@ class ReaderThread (threading.Thread):
             incoming_message.nickname = rest
         elif cmd == "MNO":
             incoming_message.type = Types.responseTypes.PRIVATE_MES_FAILED
+        elif cmd == "LSA":
+            incoming_message.type = Types.responseTypes.LIST
+            incoming_message.nickname = rest
 
         return incoming_message
 

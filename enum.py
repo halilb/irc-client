@@ -8,4 +8,4 @@ class Enum(set):
 class Types:
     originTypes = Enum(["SERVER", "LOCAL"])
     responseTypes = Enum(["NEW_LOGIN", "REJECTED", "PRIVATE_MES_FAILED",
-                          "SYSTEM", "PUBLIC_MESSAGE", "PRIVATE_MESSAGE"])
+                          "SYSTEM", "PUBLIC_MESSAGE", "PRIVATE_MESSAGE", "LIST"])

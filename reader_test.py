@@ -40,3 +40,8 @@ def testPrivateMessage():
     res = receiveMessage("MSG adam:selam halil")
     assert res.type == Types.responseTypes.PRIVATE_MESSAGE
     assert res.nickname == "adam"
+
+def testUserList():
+    res = receiveMessage("LSA ahmet:ali:ceren:serhan")
+    assert res.type == Types.responseTypes.LIST
+    assert res.nickname == "ahmet:ali:ceren:serhan"
