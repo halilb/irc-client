@@ -76,14 +76,17 @@ class ClientDialog(QDialog):
             return "Private message failed"
         elif msgType == responseTypes.SYSTEM:
             return mes.text
+        elif msgType == responseTypes.ERROR:
+            return "Server error"
+        elif msgType == responseTypes.NOT_SIGNED_IN:
+            return "You have to sign in first"
+        elif msgType == responseTypes.PRIVATE_MES_FAILED:
+            return "Target not found: <" + mes.nickname + ">"
         elif msgType == responseTypes.LIST:
             self.userList.clear()
             for item in mes.nickname.split(":"):
                 self.userList.append(item)
             return
-
-        return "not handled"
-
 
     def outgoing_parser(self):
         msg = str(self.sender.text())

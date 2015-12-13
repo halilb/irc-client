@@ -28,7 +28,7 @@ app = ClientDialog(sendQueue, screenQueue)
 reader = ReaderThread("ReaderThread", s, sendQueue, screenQueue)
 reader.start()
 
-writer = WriterThread("WriterThread", s, sendQueue)
+writer = WriterThread("WriterThread", s, sendQueue, screenQueue)
 writer.start()
 app.run()
 reader.join()

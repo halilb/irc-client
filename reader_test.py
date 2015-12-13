@@ -45,3 +45,12 @@ def testUserList():
     res = receiveMessage("LSA ahmet:ali:ceren:serhan")
     assert res.type == Types.responseTypes.LIST
     assert res.nickname == "ahmet:ali:ceren:serhan"
+
+
+def testNotSignedInMessage():
+    res = receiveMessage("ERL")
+    assert res.type == Types.responseTypes.NOT_SIGNED_IN
+
+def testErrorMessage():
+    res = receiveMessage("ERR")
+    assert res.type == Types.responseTypes.ERROR
